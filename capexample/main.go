@@ -8,6 +8,7 @@ package main
 import (
 	"fmt"
 	"github.com/dchest/captcha"
+	"image/color"
 	"io"
 	"log"
 	"net/http"
@@ -44,7 +45,15 @@ func processFormHandler(w http.ResponseWriter, r *http.Request) {
 func main() {
 	http.HandleFunc("/", showFormHandler)
 	http.HandleFunc("/process", processFormHandler)
-	http.Handle("/captcha/", captcha.Server(captcha.StdWidth, captcha.StdHeight))
+	opt:=captcha.Option{
+			Front: &color.RGBA{
+				R: 111,
+				G: 219,
+				B: 250,
+				A: 250,
+			},
+	}
+	http.Handle("/captcha/", captcha.Server(captcha.StdWidth, captcha.StdHeight,opt))
 	fmt.Println("Server is at localhost:8666")
 	if err := http.ListenAndServe("localhost:8666", nil); err != nil {
 		log.Fatal(err)

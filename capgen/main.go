@@ -9,6 +9,7 @@ import (
 	"flag"
 	"fmt"
 	"github.com/dchest/captcha"
+	"image/color"
 	"io"
 	"log"
 	"os"
@@ -46,7 +47,17 @@ func main() {
 	case *flagAudio:
 		w = captcha.NewAudio("", d, *flagLang)
 	case *flagImage:
-		w = captcha.NewImage("", d, *flagImgW, *flagImgH)
+		opt:=[]captcha.Option{
+		{
+			Front: &color.RGBA{
+				R: 111,
+				G: 219,
+				B: 250,
+				A: 0,
+			},
+		},
+		}
+		w = captcha.NewImage("", d, *flagImgW, *flagImgH,opt...)
 	}
 	_, err = w.WriteTo(f)
 	if err != nil {

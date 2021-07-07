@@ -105,12 +105,12 @@ func Reload(id string) bool {
 
 // WriteImage writes PNG-encoded image representation of the captcha with the
 // given id. The image will have the given width and height.
-func WriteImage(w io.Writer, id string, width, height int) error {
+func WriteImage(w io.Writer, id string, width, height int,opts ...Option) error {
 	d := globalStore.Get(id, false)
 	if d == nil {
 		return ErrNotFound
 	}
-	_, err := NewImage(id, d, width, height).WriteTo(w)
+	_, err := NewImage(id, d, width, height,opts...).WriteTo(w)
 	return err
 }
 
